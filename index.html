@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daniel Davis</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'VT323', monospace;
+            background-color: #008080; /* Classic teal wallpaper */
+            color: #000;
+            overflow-x: hidden; /* Prevent horizontal scroll from animations */
+        }
+
+        /* --- Windows 95 UI Styling --- */
+        .window {
+            background: #c0c0c0;
+            border-top: 2px solid #ffffff;
+            border-left: 2px solid #ffffff;
+            border-right: 2px solid #000000;
+            border-bottom: 2px solid #000000;
+            box-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            padding: 3px;
+        }
+
+        .title-bar {
+            background: linear-gradient(to right, #000080, #1084d0);
+            color: #ffffff;
+            padding: 4px 6px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 1.25rem; /* 20px */
+        }
+
+        .title-bar-controls button {
+            width: 20px;
+            height: 20px;
+            background: #c0c0c0;
+            border-top: 1px solid #ffffff;
+            border-left: 1px solid #ffffff;
+            border-right: 1px solid #000000;
+            border-bottom: 1px solid #000000;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: 3px;
+            font-family: 'Times New Roman', serif;
+            font-weight: bold;
+        }
+        
+        .title-bar-controls button:active {
+           border-top: 1px solid #000000;
+           border-left: 1px solid #000000;
+           border-right: 1px solid #ffffff;
+           border-bottom: 1px solid #ffffff;
+        }
+
+        .window-body {
+            padding: 1.5rem;
+            min-height: 100px;
+        }
+        
+        .win-button {
+            background: #c0c0c0;
+            border-top: 2px solid #ffffff;
+            border-left: 2px solid #ffffff;
+            border-right: 2px solid #000000;
+            border-bottom: 2px solid #000000;
+            padding: 0.5rem 1rem;
+        }
+        .win-button:active {
+            border-top: 2px solid #000000;
+            border-left: 2px solid #000000;
+            border-right: 2px solid #ffffff;
+            border-bottom: 2px solid #ffffff;
+        }
+        
+        .status-bar {
+            margin-top: 4px;
+            border-top: 1px solid #808080;
+            border-left: 1px solid #808080;
+            border-right: 1px solid #ffffff;
+            border-bottom: 1px solid #ffffff;
+            padding: 2px 4px;
+        }
+        
+        /* Ensure mobile menu has retro styling */
+        #mobile-menu a {
+            border: 1px dashed transparent;
+        }
+        #mobile-menu a:hover {
+            background-color: #000080;
+            color: #ffffff;
+            border: 1px dashed #ffffff;
+        }
+
+        /* --- Slideshow Styling --- */
+        .slideshow-container {
+            position: relative;
+            background-color: #000;
+            border: 2px solid;
+            border-color: #808080 #ffffff #ffffff #808080;
+        }
+
+        .slideshow-image {
+            width: 100%;
+            height: auto;
+            max-height: 500px;
+            object-fit: contain;
+            display: block;
+        }
+
+        .slideshow-controls {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem;
+            background-color: #c0c0c0;
+            border-top: 2px solid #808080;
+        }
+        
+        /* --- Scroll Animation --- */
+        .animated-widget {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .animated-widget.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* --- LinkedIn Badge Styling --- */
+        .badge-base {
+            margin: 0; /* Remove default margin */
+        }
+        
+        /* --- NEW: Badge Container Styling --- */
+        .badge-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center; /* Vertically center items */
+            gap: 1.5rem; /* 24px */
+            margin: 1.5rem auto;
+        }
+
+        .github-stats-card {
+            max-width: 100%; /* Ensure it's responsive */
+            height: auto;
+        }
+    </style>
+</head>
+<body class="text-xl">
+
+    <!-- Header & Navigation --><header class="bg-[#c0c0c0] border-b-2 border-black sticky top-0 z-50">
+        <nav class="container mx-auto px-6 py-2 flex justify-between items-center">
+            <a href="#" id="home-link" class="text-3xl tracking-wider text-black">C:\Users\Daniel</a>
+            <div id="main-nav-links" class="hidden md:flex items-center space-x-8">
+                <a href="#about" class="hover:underline">About</a>
+                <a href="#education" class="hover:underline">Education</a>
+                <a href="#experience" class="hover:underline">Experience</a>
+                <a href="#projects" class="hover:underline">Projects</a>
+                <a href="#contact" class="hover:underline">Contact</a>
+            </div>
+            <button id="mobile-menu-button" class="md:hidden win-button p-2">
+                Menu
+            </button>
+        </nav>
+        <!-- Mobile Menu --><div id="mobile-menu" class="md:hidden hidden bg-[#c0c0c0] border-t-2 border-black">
+            <div class="p-2 space-y-1">
+                <a href="#about" class="block p-2">About.txt</a>
+                <a href="#education" class="block p-2">Education.txt</a>
+                <a href="#experience" class="block p-2">Experience.log</a>
+                <a href="#projects" class="block p-2">Projects.exe</a>
+                <a href="#contact" class="block p-2">Contact.inf</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- This div wraps the main portfolio content --><div id="main-portfolio">
+        <!-- Main Content --><main class="container mx-auto px-6 py-12">
+
+            <!-- Hero Section --><section id="hero" class="text-center py-10">
+                <h1 class="text-6xl md:text-7xl font-extrabold text-white mb-4" style="text-shadow: 2px 2px #000;">Daniel Davis</h1>
+            </section>
+
+            <!-- About Section --><section id="about" class="mb-12">
+                <!-- Added animated-widget class --><div class="window animated-widget">
+                    <div class="title-bar">
+                        <div class="title-bar-text">About_Me.txt</div>
+                    </div>
+                    <div class="window-body text-2xl">
+                        <p>Hello! I'm an undergraduate Computer Engineering student at Texas A&M University with experience in both hardware and software development. I have an interest in all sorts of fields in computing! Take some time to check out my projects and please feel free to reach out with any questions or opportunities to connect!</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Projects Section --><section id="projects" class="mb-12">
+                <!-- Added animated-widget class --><div class="window animated-widget">
+                    <div class="title-bar">
+                        <div class="title-bar-text">Projects.exe</div>
+                    </div>
+                    <div class="window-body">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            <!-- Project 4 --><!-- Added animated-widget class --><div class="window animated-widget" style="transition-delay: 150ms;">
+                               <!-- MODIFIED: Updated src to envelope_1 --><img class="w-full h-56 object-cover border-b-2 border-black" src="resources/envelope_3" alt="Envelope - Internet-Connected Message Display">
+                               <div class="p-4">
+                                   <h3 class="text-2xl font-bold mb-2">Envelope - Internet-Connected Message Display</h3>
+                                   <p class="mb-4">A project built for my girlfriend using a Cheap-Yellow-Display. This device is placed on a desk or nightstand, displaying real-time messages sent over the internet.</p>
+                                   <!-- This button will trigger the project detail view --><button class="win-button project-detail-button" data-project-id="proj4">Details</button>
+                               </div>
+                            </div>
+
+                            <!-- Project 2 --><!-- Added animated-widget class --><div class="window animated-widget" style="transition-delay: 300ms;">
+                                <!-- MODIFIED: Updated src to notion_1 --><img class="w-full h-56 object-cover border-b-2 border-black" src="resources/notion_1" alt="Notion Study Guide Generator">
+                                <div class="p-4">
+                                    <h3 class="text-2xl font-bold mb-2">ChatGPT/Notion Study Guide Generator</h3>
+                                    <p class="mb-4">A full-stack Gantt Chart generator that feeds study topics directly into a user's Notion account via the Notion API. Built for the 2025 Build4Good Hackathon.</p>
+                                    <!-- This button will trigger the project detail view --><button class="win-button project-detail-button" data-project-id="proj2">Details</button>
+                                </div>
+                            </div>
+
+                            <!-- Project 1 --><!-- Added animated-widget class --><div class="window animated-widget" style="transition-delay: 150ms;">
+                               <!-- MODIFIED: Updated src to mp3_1 --><img class="w-full h-56 object-cover border-b-2 border-black" src="resources/mp3_1" alt="MP3 Music App">
+                               <div class="p-4">
+                                   <h3 class="text-2xl font-bold mb-2">MP3 Music App (Windows)</h3>
+                                   <p class="mb-4">A desktop music player for Windows created using C# and WPF, including features like audio playback and file management.</p>
+                                   <!-- This button will trigger the project detail view --><button class="win-button project-detail-button" data-project-id="proj1">Details</button>
+                               </div>
+                            </div>
+                            
+                            <!-- MODIFIED: Project 3 --><div class="window animated-widget" style="transition-delay: 150ms;">
+                               <img class="w-full h-56 object-cover border-b-2 border-black" src="resources/arduino_1.png" alt="Arduino LCD Menu Screen">
+                               <div class="p-4">
+                                   <h3 class="text-2xl font-bold mb-2">Arduino LCD Menu Screen</h3>
+                                   <p class="mb-4">A C++ based menu screen for an LCD using a rotary encoder, designed for Arduino components. (Work in Progress)</p>
+                                   <!-- This button now opens details --><button class="win-button project-detail-button" data-project-id="proj3">Details</button>
+                               </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Experience Section --><section id="experience" class="mb-12">
+                 <!-- Added animated-widget class --><div class="window animated-widget">
+                    <div class="title-bar">
+                        <div class="title-bar-text">Experience.log</div>
+                    </div>
+                    <div class="window-body text-2xl space-y-6">
+                        <div>
+                            <h3 class="text-3xl font-bold">Student Technician - Mays Business School, Texas A&M</h3>
+                            <p class="text-xl italic">August 2024 - Present</p>
+                            <ul class="list-disc list-inside mt-2">
+                                <li>Provide technical support to 500+ faculty, staff, and graduate students.</li>
+                                <li>Mentor and train incoming student technicians.</li>
+                                <li>Manage and deploy university devices using Active Directory, Intune, and JAMF.</li>
+                                <li>Recognized as the highest performing student employee (400+ tickets resolved).</li>
+                            </ul>
+                        </div>
+                         <div>
+                            <h3 class="text-3xl font-bold">Peer Mentor/TA for FYEX 101 - Hullabaloo U, Texas A&M</h3>
+                            <p class="text-xl italic">August 2024 - December 2024</p>
+                             <ul class="list-disc list-inside mt-2">
+                                <li>Mentored a class of 25 students, providing academic and personal support.</li>
+                                <li>Independently designed and presented lectures on student success strategies.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Contact Section --><section id="contact" class="mb-12">
+                <!-- Added animated-widget class --><div class="window animated-widget">
+                    <div class="title-bar">
+                        <div class="title-bar-text">Contact.inf</div>
+                    </div>
+                    <div class="window-body text-center">
+                        <p class="text-2xl mb-6">I'm currently seeking new opportunities. Feel free to connect!</p>
+                        
+                        <!-- NEW: Badge Container --><div class="badge-container">
+                            <!-- LinkedIn Badge - Removed the <a class="badge-base__link LI-simple-link">Daniel Davis</a> --><div class="badge-base LI-profile-badge" data-locale="en_US" data-size="medium" data-theme="light" data-type="VERTICAL" data-vanity="daniel-davis-bb90802a9" data-version="v1">
+                                <!-- Removed: <a class="badge-base__link LI-simple-link" href="https://www.linkedin.com/in/daniel-davis-bb90802a9?trk=profile-badge">Daniel Davis</a> --></div>
+
+                            <!-- GitHub Stats Badge --><a href="https://github.com/danielwd27" target="_blank" rel="noopener noreferrer">
+                                <img src="https://github-readme-stats.vercel.app/api?username=danielwd27&show_icons=true&border_color=000000&title_color=000080&icon_color=000080&text_color=000000&hide_border=false" 
+                                     alt="Daniel Davis' GitHub Stats" 
+                                     class="github-stats-card" />
+                            </a>
+                        </div>
+                        
+                        <div class="flex justify-center items-center flex-wrap gap-4 mt-6"> <!-- Added margin-top --><a href="mailto:ddavis6q@tamu.edu" class="win-button">Email</a>
+                             <a href="resources/Davis_Daniel.pdf" target="_blank" rel="noopener noreferrer" class="win-button">View Resume</a>
+                             <a href="https://github.com/danielwd27" target="_blank" rel="noopener noreferrer" class="win-button">GitHub Profile</a>
+                             <a href="https://linkedin.com/in/daniel-davis-bb90802a9" target="_blank" rel="noopener noreferrer" class="win-button">LinkedIn Page</a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer --><footer class="container mx-auto px-6 pb-6">
+            <!-- Added animated-widget class --><!-- FIXED typo classs -> class --><div class="window animated-widget">
+                <div class="status-bar">
+                    <p>&copy; 2025 Daniel Davis. All Rights Reserved.</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- This div is hidden by default and will hold the project detail content --><div id="project-detail-container" class="hidden container mx-auto px-6 py-12">
+        <!-- Project detail content will be injected here by JavaScript --></div>
+
+
+    <script>
+        // --- Project Data ---
+        // I've written descriptions based on your resume.
+        // Replace the placeholder image URLs with your actual project photos.
+        const projectData = {
+            "proj1": {
+                title: "MP3 Music App (Windows)",
+                // MODIFIED: Updated image path
+                images: [
+                    "resources/mp3_1"
+                ],
+                description: "Last summer, having been frustrated with the lack of a dark mode setting in iTunes, I set out to make my own player in which I could control the customizability. The resulting project involved creating a complete desktop music player from the ground up for the Windows platform. The goal was not necessarily to create the best product possible, but to gain experience in the tools related to software development. Using C# and the Windows Presentation Foundation (WPF) within Visual Studio, I engineered a functional application which included basic features. The development process focused on implementing core features essential for any music app, including robust audio playback controls and a system for managing music files within a user's library. Moving forward, I plan to implement a queue system, which is already in process, as well as in-app playlist and library management."
+            },
+            "proj2": {
+                title: "ChatGPT/Notion Study Guide Generator",
+                // MODIFIED: Updated image paths
+                images: [
+                    "resources/notion_1",
+                    "resources/notion_2"
+                ],
+                description: "As part of the B4G Hackathon, I collaborated to engineer a full-stack solution to help students automate their study process. The project is comprised of three main components: a custom website for the user to interact with, a trained ChatGPT model, which handles user input and develops a formatted and detailed timeline, and a conversion to a tangible Notion UI element right into a page on the user's Notion account. While I helped to implement all of these functions as well as the dataflow, I primarily focused on the latter. Utilizing Notion API and JavaScript, I created the method to take the ChatGPT output and generate a stylized Timeline in Notion (technically implemented as a database). Ultimately the project helped me to understand the pipeline of software development and improved my skills on working in a coordinated group environment. Feel free to reach out and ask me about this project!"
+            },
+            // NEW: Project 3 Data
+            "proj3": {
+                title: "Arduino LCD Menu Screen",
+                images: [
+                    "resources/arduino_1",
+                    "resources/arduino_2"
+                ],
+                description: "This is an ONGOING project! Check the repository for the latest updates and to view the source code! The goal is to build a C++ based menu system for an Arduino-compatible LCD screen. The menu is navigated using a rotary encoder and is designed to interface with various sensors and other components. I plan on connecting as many other devices as long as I have pins available. Currently, all menu functionality has been implemented and there is one functional option which is to read data from a temperature and humidity sensor.",
+                repoUrl: "https://github.com/danielwd27/Arduino-LCD-Based-Menu" // Added repo URL
+            },
+            "proj4": {
+                title: "Envelope - Internet-Connected Message Display",
+                images: [
+                    "resources/envelope_3",
+                    "resources/envelope_2",
+                    "resources/envelope_4",
+                    "resources/envelope_1"
+                ],
+                description: "This is a project I made for my girlfriend for Christmas over about a month. It's built with an ESP32 CYD (Cheap-yellow-display) bought for just over $20. With a 3d printed case, this device sits on a desk or nightstand, displaying real-time messages sent over the internet. This is the most ambitious project I've created to date, please view the full features, details, and source code on the GitHub repository linked below.",
+                repoUrl: "https://github.com/danielwd27/Envelope"
+            }
+        };
+
+        // --- Page Navigation Elements ---
+        const mainPortfolioDiv = document.getElementById('main-portfolio');
+        const projectDetailContainer = document.getElementById('project-detail-container');
+        const detailButtons = document.querySelectorAll('.project-detail-button');
+        const homeLink = document.getElementById('home-link');
+        const mainNavLinks = document.getElementById('main-nav-links');
+        const mobileNavLinks = document.getElementById('mobile-menu').querySelectorAll('a');
+
+        // --- Slideshow State ---
+        let currentImageIndex = 0;
+        let currentImages = [];
+
+        // --- Functions ---
+
+        function showProjectDetails(projectId) {
+            // Get the data for the clicked project
+            const data = projectData[projectId];
+            if (!data) return;
+
+            // Reset slideshow state
+            currentImageIndex = 0;
+            currentImages = data.images;
+
+            // MODIFIED: Check for repoUrl and create button HTML
+            let repoButtonHTML = '';
+            if (data.repoUrl) {
+                repoButtonHTML = `<a href="${data.repoUrl}" target="_blank" rel="noopener noreferrer" class="win-button">View Repo</a>`;
+            }
+
+            // Create the HTML for the project detail page
+            const projectHTML = `
+                <div class="window">
+                    <div class="title-bar">
+                        <div class="title-bar-text">${data.title}.exe</div>
+                    </div>
+                    <div class="window-body text-2xl space-y-6">
+                        <!-- Slideshow --><div class="slideshow-container">
+                            <img id="slideshow-image" src="${currentImages[currentImageIndex]}" alt="${data.title} screenshot" class="slideshow-image">
+                        </div>
+                        <div class="slideshow-controls">
+                            <button id="prev-btn" class="win-button">&lt;&lt; Previous</button>
+                            <span id="image-counter" class="p-2">${currentImageIndex + 1} / ${currentImages.length}</span>
+                            <button id="next-btn" class="win-button">Next &gt;&gt;</button>
+                        </div>
+                        
+                        <!-- Description --><div>
+                            <h3 class="text-3xl font-bold">Project Description</h3>
+                            <p class="mt-2">${data.description}</p>
+                        </div>
+
+                        <!-- Back Button --><div class="pt-4 border-t-2 border-gray-500 text-right flex justify-end gap-4">
+                            ${repoButtonHTML} <!-- Inject Repo button -->
+                            <button id="back-to-portfolio" class="win-button">&lt;&lt; Back to Portfolio</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            // Inject the HTML, hide main content, and show project content
+            projectDetailContainer.innerHTML = projectHTML;
+            mainPortfolioDiv.classList.add('hidden');
+            projectDetailContainer.classList.remove('hidden');
+            
+            // Hide main nav links, show home-only link
+            mainNavLinks.classList.add('hidden');
+            mobileMenu.classList.add('hidden');
+            
+            // Add event listeners for the new buttons
+            document.getElementById('prev-btn').addEventListener('click', showPrevImage);
+            document.getElementById('next-btn').addEventListener('click', showNextImage);
+            document.getElementById('back-to-portfolio').addEventListener('click', hideProjectDetails);
+            
+            // Scroll to top
+            window.scrollTo(0, 0);
+        }
+
+        function hideProjectDetails() {
+            // Hide project content, show main content
+            projectDetailContainer.classList.add('hidden');
+            mainPortfolioDiv.classList.remove('hidden');
+            
+            // Show main nav links
+            mainNavLinks.classList.remove('hidden');
+            
+            // Clear the project HTML
+            projectDetailContainer.innerHTML = '';
+            
+            // Ensure the URL hash is clean by setting it to empty
+            // This avoids the pushState SecurityError in sandboxed environments
+            window.location.hash = '';
+        }
+
+        function updateSlideshow() {
+            document.getElementById('slideshow-image').src = currentImages[currentImageIndex];
+            document.getElementById('image-counter').textContent = `${currentImageIndex + 1} / ${currentImages.length}`;
+        }
+
+        function showPrevImage() {
+            currentImageIndex = (currentImageIndex > 0) ? currentImageIndex - 1 : currentImages.length - 1;
+            updateSlideshow();
+        }
+
+        function showNextImage() {
+            currentImageIndex = (currentImageIndex < currentImages.length - 1) ? currentImageIndex + 1 : 0;
+            updateSlideshow();
+        }
+
+        // --- Initial Event Listeners ---
+
+        // Add click listener to all "Details" buttons
+        detailButtons.forEach(button => {
+            button.addEventListener('click', (e) => {
+                const projectId = e.currentTarget.getAttribute('data-project-id');
+                // Use hash to simulate navigation
+                window.location.hash = projectId;
+            });
+        });
+
+        // Mobile menu toggle
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // --- NEW: Smooth scrolling for all nav links ---
+        const header = document.querySelector('header');
+        // Get header height, provide a fallback
+        const headerHeight = header ? header.offsetHeight : 70; 
+
+        const allNavLinks = [
+            ...document.querySelectorAll('#main-nav-links a'),
+            ...document.querySelectorAll('#mobile-menu a')
+        ];
+
+        allNavLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault(); // Stop the default hash jump
+                
+                const href = link.getAttribute('href');
+                if (!href || href === '#') return; // Safety check
+
+                // --- MODIFIED: Check if on project page and go back ---
+                // Check if we are on a project page. If so, go back to main.
+                if (projectDetailContainer.classList.contains('hidden') === false) {
+                    hideProjectDetails();
+                }
+                // --- End modification ---
+
+                const targetId = href.substring(1); // Get "about" from "#about"
+                const targetElement = document.getElementById(targetId);
+
+                if (targetElement) {
+                    // Calculate position: target's top position - header height - 20px buffer
+                    const targetPosition = targetElement.offsetTop - headerHeight - 20; 
+
+                    window.scrollTo({
+                        top: targetPosition,
+                        behavior: 'smooth'
+                    });
+                }
+                
+                // If it's a mobile link (or menu is open), hide the menu
+                if (mobileMenu.classList.contains('hidden') === false) {
+                    mobileMenu.classList.add('hidden');
+                }
+            });
+        });
+        
+        /* // This logic is now handled by the listener above
+        // Close mobile menu when a link is clicked
+        mobileNavLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+        });
+        */
+        
+        // Listen for hash changes to show/hide projects
+        window.addEventListener('hashchange', () => {
+            const hash = window.location.hash.substring(1);
+            if (projectData[hash]) {
+                showProjectDetails(hash);
+            } else {
+                hideProjectDetails();
+            }
+        });
+        
+        // Check hash on initial page load
+        const initialHash = window.location.hash.substring(1);
+        if (projectData[initialHash]) {
+            showProjectDetails(initialHash);
+        }
+
+        // Make "C:\Users\Daniel" link go home
+        homeLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            // Directly call hideProjectDetails() if we are in a project view
+            // FIXED: comtains -> contains
+            if (projectDetailContainer.classList.contains('hidden') === false) {
+                 hideProjectDetails();
+            }
+            // Always scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // --- NEW: Scroll Animation Logic ---
+        document.addEventListener('DOMContentLoaded', () => {
+            const animatedWidgets = document.querySelectorAll('.animated-widget');
+
+            // Check if IntersectionObserver is supported
+            if ('IntersectionObserver' in window) {
+                const observerOptions = {
+                    root: null, // relative to the viewport
+                    rootMargin: '0px',
+                    threshold: 0.1 // 10% of the item must be visible to trigger
+                };
+
+                const observerCallback = (entries, observer) => {
+                    entries.forEach(entry => {
+                        // When the element is in view
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('is-visible');
+                            // Stop observing it so the animation only happens once
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                };
+
+                const widgetObserver = new IntersectionObserver(observerCallback, observerOptions);
+
+                // Observe each widget
+                animatedWidgets.forEach(widget => {
+                    widgetObserver.observe(widget);
+                });
+            } else {
+                // Fallback for older browsers that don't support IntersectionObserver
+                // Just make them all visible immediately
+                animatedWidgets.forEach(widget => {
+                    widget.classList.add('is-visible');
+                });
+            }
+        });
+
+    </script>
+    
+    <!-- ADDED: LinkedIn Badge Script --><script src="https://platform.linkedin.com/badges/js/profile.js" async defer type="text/javascript"></script>
+
+</body>
+</html>
